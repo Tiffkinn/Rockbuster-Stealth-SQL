@@ -32,6 +32,23 @@ The results of the analysis will be presented to Rockbuster management, so visua
   </tr>
 </table>
 
+## Data and Tools:
+
+<table>
+  <tr>
+    <td>
+      <ul>
+        <li>The Rockbuster dataset contains information about Rockbuster’s film inventory, customers, and payments, among other things.</li>
+        <li>The data was analyzed using a relational database management system and PostgreSQL.</li>
+      </ul>
+    </td>
+    <td>
+      <img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/SQL_image.png" alt="Film Reel Logo" width="300">
+    </td>
+  </tr>
+</table>
 
 
-[Tableau Presentation](https://public.tableau.com/app/profile/tiffany.kinney/viz/Rockbuster3-10TiffKinney/Story1)
+[Download the Rockbuster Dataset](http://www.postgresqltutorial.com/wp-content/uploads/2019/05/dvdrental.zip)
+
+All visualizations were created in Tableau Public [Tableau Presentation](https://public.tableau.com/app/profile/tiffany.kinney/viz/Rockbuster3-10TiffKinney/Story1)
