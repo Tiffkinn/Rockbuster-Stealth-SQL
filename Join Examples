@@ -1,0 +1,54 @@
+# This query is an example of multiple JOIN operations to combine data from different tables.
+# The query aggregates and sorts the data to show the top 10 actors based on the revenue generated from film rentals.
+
+SELECT 
+    A.actor_id,
+    A.first_name,
+    A.last_name,
+    COUNT(DISTINCT R.rental_id) AS transaction_count,
+    SUM(P.amount) AS total_amount
+FROM actor AS A
+JOIN film_actor AS FA ON A.actor_id = FA.actor_id
+JOIN film AS F ON FA.film_id = F.film_id
+JOIN inventory AS I ON F.film_id = I.film_id
+JOIN rental AS R ON I.inventory_id = R.inventory_id
+JOIN payment AS P ON R.rental_id = P.rental_id
+GROUP BY A.actor_id
+ORDER BY  total_amount DESC
+LIMIT 10
+
+# This SQL query retrieves the top 10 actors with the highest number of rental transactions, showing their ID, first name, last name, total number of transactions, and total revenue generated. 
+# The results are ordered by the transaction count in descending order.
+
+SELECT 
+    A.actor_id,
+    A.first_name,
+    A.last_name,
+    COUNT(DISTINCT R.rental_id) AS transaction_count,
+    SUM(P.amount) AS total_amount
+FROM actor AS A
+JOIN film_actor AS FA ON A.actor_id = FA.actor_id
+JOIN film AS F ON FA.film_id = F.film_id
+JOIN inventory AS I ON F.film_id = I.film_id
+JOIN rental AS R ON I.inventory_id = R.inventory_id
+JOIN payment AS P ON R.rental_id = P.rental_id
+GROUP BY A.actor_id
+ORDER BY  transaction_count DESC
+LIMIT 10
+
+# This SQL query retrieves the actors with the highest number of rental transactions
+# showing their ID, full name, total number of transactions, and total revenue generated, ordered by the transaction count in descending order.
+
+SELECT 
+    A.actor_id,
+    A.first_name || ' ' || A.last_name AS full_name,
+    COUNT(DISTINCT R.rental_id) AS transaction_count,
+    SUM(P.amount) AS total_amount
+FROM actor AS A
+JOIN film_actor AS FA ON A.actor_id = FA.actor_id
+JOIN film AS F ON FA.film_id = F.film_id
+JOIN inventory AS I ON F.film_id = I.film_id
+JOIN rental AS R ON I.inventory_id = R.inventory_id
+JOIN payment AS P ON R.rental_id = P.rental_id
+GROUP BY A.actor_id, full_name
+ORDER BY transaction_count DESC;
