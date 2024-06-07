@@ -43,7 +43,7 @@ The results of the analysis will be presented to Rockbuster management, so visua
       </ul>
     </td>
     <td>
-      <img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/SQL_image.png" alt="Film Reel Logo" width="300">
+      <img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/SQL_image.png" alt="SQL Logo" width="300">
     </td>
   </tr>
 </table>
@@ -52,3 +52,4 @@ The results of the analysis will be presented to Rockbuster management, so visua
 [Download the Rockbuster Dataset](http://www.postgresqltutorial.com/wp-content/uploads/2019/05/dvdrental.zip)
 
 All visualizations were created in Tableau Public [Tableau Presentation](https://public.tableau.com/app/profile/tiffany.kinney/viz/Rockbuster3-10TiffKinney/Story1)
+<img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/Tableau_Logo.png" alt="Tableau Logo" width="300">
