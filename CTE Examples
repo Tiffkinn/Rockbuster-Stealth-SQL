@@ -90,4 +90,79 @@ FROM RankedActors
 WHERE actor_rank = 1
 ORDER BY country;
 
+# The ActorFilmTransactions CTE calculates the transaction count for each film for each actor and uses the ROW_NUMBER() window function to determine the ranking of films for each actor within each country.
+# The RankedActors CTE joins the previous CTEs and only considers the top film for each actor by filtering for film_rank = 1.
+# The final SELECT statement includes the top film for each top actor in each country along with the respective counts and amounts.
+
+WITH ActorCountryStats AS (
+    SELECT 
+        A.actor_id,
+        A.first_name || ' ' || A.last_name AS full_name,
+        CO.country,
+        COUNT(DISTINCT R.rental_id) AS transaction_count,
+        SUM(P.amount) AS total_amount
+    FROM actor A
+    JOIN film_actor FA ON A.actor_id = FA.actor_id
+    JOIN film F ON FA.film_id = F.film_id
+    JOIN inventory I ON F.film_id = I.film_id
+    JOIN rental R ON I.inventory_id = R.inventory_id
+    JOIN customer CUS ON R.customer_id = CUS.customer_id
+    JOIN address AD ON CUS.address_id = AD.address_id
+    JOIN city CI ON AD.city_id = CI.city_id
+    JOIN country CO ON CI.country_id = CO.country_id
+    JOIN payment P ON R.rental_id = P.rental_id
+    GROUP BY A.actor_id, full_name, CO.country
+),
+CountryCustomerCount AS (
+    SELECT 
+        CO.country_id,
+        CO.country,
+        COUNT(DISTINCT CUS.customer_id) AS customer_count
+    FROM customer CUS
+    JOIN address AD ON CUS.address_id = AD.address_id
+    JOIN city CI ON AD.city_id = CI.city_id
+    JOIN country CO ON CI.country_id = CO.country_id
+    GROUP BY CO.country_id, CO.country
+),
+ActorFilmTransactions AS (
+    SELECT 
+        FA.actor_id,
+        F.title,
+        CO.country,
+        COUNT(R.rental_id) AS film_transaction_count,
+        ROW_NUMBER() OVER (PARTITION BY FA.actor_id, CO.country ORDER BY COUNT(R.rental_id) DESC) AS film_rank
+    FROM film_actor FA
+    JOIN film F ON FA.film_id = F.film_id
+    JOIN inventory I ON F.film_id = I.film_id
+    JOIN rental R ON I.inventory_id = R.inventory_id
+    JOIN customer CUS ON R.customer_id = CUS.customer_id
+    JOIN address AD ON CUS.address_id = AD.address_id
+    JOIN city CI ON AD.city_id = CI.city_id
+    JOIN country CO ON CI.country_id = CO.country_id
+    GROUP BY FA.actor_id, F.title, CO.country
+),
+RankedActors AS (
+    SELECT 
+        ACS.*,
+        AFT.title AS top_film,
+        AFT.film_transaction_count,
+        CCC.customer_count,
+        RANK() OVER (PARTITION BY ACS.country ORDER BY ACS.total_amount DESC, ACS.transaction_count DESC) AS actor_rank
+    FROM ActorCountryStats ACS
+    JOIN CountryCustomerCount CCC ON ACS.country = CCC.country
+    JOIN ActorFilmTransactions AFT ON ACS.actor_id = AFT.actor_id AND ACS.country = AFT.country
+    WHERE AFT.film_rank = 1
+)
+SELECT 
+    country,
+    full_name AS top_actor,
+    transaction_count AS top_actor_transaction_count,
+    total_amount AS top_actor_total_amount,
+    top_film,
+    film_transaction_count AS top_film_transaction_count,
+    customer_count
+FROM RankedActors
+WHERE actor_rank = 1
+ORDER BY country, total_amount DESC;
+
     
