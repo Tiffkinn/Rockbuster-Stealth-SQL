@@ -37,4 +37,57 @@ TopCitiesInTopCountries AS (
             D.city IN (SELECT city FROM TopCitiesInTopCountries)
         GROUP BY B.customer_id, B.first_name, B.last_name, E.country, D.city
         ORDER BY total_amount_paid DESC LIMIT 10
+
+# To obtain the top actor for each country along with the total amount, total transactions, and total customer count for that country
+# Uses a combination of a derived table (subquery in the FROM clause) to calculate the sums and counts, and then a subsequent outer query to select the top actor for each country. 
+# The outer query will also use window functions to assign a rank to each actor based on the transaction count and total amount within each country.
+
+WITH ActorCountryStats AS (
+    SELECT 
+        A.actor_id,
+        A.first_name || ' ' || A.last_name AS full_name,
+        CO.country,
+        COUNT(DISTINCT R.rental_id) AS transaction_count,
+        SUM(P.amount) AS total_amount
+    FROM actor AS A
+    JOIN film_actor AS FA ON A.actor_id = FA.actor_id
+    JOIN film AS F ON FA.film_id = F.film_id
+    JOIN inventory AS I ON F.film_id = I.film_id
+    JOIN rental AS R ON I.inventory_id = R.inventory_id
+    JOIN customer AS CUS ON R.customer_id = CUS.customer_id
+    JOIN address AS AD ON CUS.address_id = AD.address_id
+    JOIN city AS CI ON AD.city_id = CI.city_id
+    JOIN country AS CO ON CI.country_id = CO.country_id
+    JOIN payment AS P ON R.rental_id = P.rental_id
+    GROUP BY A.actor_id, full_name, CO.country
+),
+CountryCustomerCount AS (
+    SELECT 
+        CO.country_id,
+        CO.country,
+        COUNT(DISTINCT CUS.customer_id) AS customer_count
+    FROM customer AS CUS
+    JOIN address AS AD ON CUS.address_id = AD.address_id
+    JOIN city AS CI ON AD.city_id = CI.city_id
+    JOIN country AS CO ON CI.country_id = CO.country_id
+    GROUP BY CO.country_id, CO.country
+),
+RankedActors AS (
+    SELECT 
+        ACS.*,
+        CCC.customer_count,
+        RANK() OVER (PARTITION BY ACS.country ORDER BY ACS.total_amount DESC, ACS.transaction_count DESC) AS actor_rank
+    FROM ActorCountryStats ACS
+    JOIN CountryCustomerCount CCC ON ACS.country = CCC.country
+)
+SELECT 
+    country,
+    full_name AS top_actor,
+    transaction_count AS top_actor_transaction_count,
+    total_amount AS top_actor_total_amount,
+    customer_count
+FROM RankedActors
+WHERE actor_rank = 1
+ORDER BY country;
+
     
