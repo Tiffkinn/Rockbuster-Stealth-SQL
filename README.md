@@ -1,6 +1,6 @@
 
 <div align="center">
-  <img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/Rockbuster_title.png" alt="Instacart-Basket-Analysis-Python Logo" width="800">
+  <img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/images/Rockbuster_title.png" alt="Instacart-Basket-Analysis-Python Logo" width="800">
 </div>
 
 <h1 align="center">Rockbuster-Stealth-SQL</h1>
@@ -27,7 +27,7 @@ The results of the analysis will be presented to Rockbuster management, so visua
       </ul>
     </td>
     <td>
-      <img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/Rockbuster_reel.jpg" alt="Film Reel Logo" width="300">
+      <img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/images/Rockbuster_reel.jpg" alt="Film Reel Logo" width="300">
     </td>
   </tr>
 </table>
@@ -43,7 +43,7 @@ The results of the analysis will be presented to Rockbuster management, so visua
       </ul>
     </td>
     <td>
-      <img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/SQL_image.png" alt="SQL Logo" width="300">
+      <img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/images/SQL_image.png" alt="SQL Logo" width="300">
     </td>
   </tr>
 </table>
@@ -52,4 +52,4 @@ The results of the analysis will be presented to Rockbuster management, so visua
 [Download the Rockbuster Dataset](http://www.postgresqltutorial.com/wp-content/uploads/2019/05/dvdrental.zip)
 
 All visualizations were created in Tableau Public [Tableau Presentation](https://public.tableau.com/app/profile/tiffany.kinney/viz/Rockbuster3-10TiffKinney/Story1)
-<img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/Tableau_Logo.png" alt="Tableau Logo" width="300">
+<img src="https://github.com/Tiffkinn/Rockbuster-Stealth-SQL/blob/main/images/Tableau_Logo.png" alt="Tableau Logo" width="300">
